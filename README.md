@@ -1,6 +1,6 @@
 # novelizer
 
-Read, listen or download novels
+Read, listen and download novels
 
 ## Getting Started
 
