@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'fade-in-route.dart';
+import 'fade_in_route.dart';
 
 abstract class Screen {
   bool matchRoute(String route);

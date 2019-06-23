@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "390581165990",
+    "firebase_url": "https://novelizer-app.firebaseio.com",
+    "project_id": "novelizer-app",
+    "storage_bucket": "novelizer-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390581165990:android:6f64162df0ddcd18",
+        "android_client_info": {
+          "package_name": "org.bitanon.novelizer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "390581165990-ffp4mlaalq5opthn0bt8eo0i11pbu7dm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.bitanon.novelizer",
+            "certificate_hash": "8b4fd5b2dbed50a9b38ac743aae3c322363fb550"
+          }
+        },
+        {
+          "client_id": "390581165990-iukd142mshahji9u91846so6og2vhian.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1LCWGlwxswZA8lYRS4Wz_y21Zxz4BFZA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "390581165990-iukd142mshahji9u91846so6og2vhian.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
