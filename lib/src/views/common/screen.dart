@@ -4,6 +4,7 @@ import 'fade_in_route.dart';
 
 abstract class Screen {
   bool matchRoute(String route);
+
   Widget build(BuildContext context);
 
   Route buildRoute(RouteSettings settings) {

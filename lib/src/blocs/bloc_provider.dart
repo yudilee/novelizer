@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // Generic Interface for all BLoCs
 abstract class BlocBase {
   void dispose();
+
   void initState(BuildContext context) {}
 }
 

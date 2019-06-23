@@ -1,6 +1,10 @@
+import 'package:flutter/material.dart';
+
 import 'bloc_provider.dart';
 
-class DownloadManagerBloc extends BlocBase {
+class DownloaderBloc extends BlocBase {
+  static DownloaderBloc of(BuildContext context) => BlocProvider.of(context);
+
   @override
   void dispose() {
     //
