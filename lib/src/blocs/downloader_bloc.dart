@@ -1,4 +1,4 @@
-import 'bloc-provider.dart';
+import 'bloc_provider.dart';
 
 class DownloadManagerBloc extends BlocBase {
   @override
