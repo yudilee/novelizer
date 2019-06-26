@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 
+import '../blocs/auth_bloc.dart';
+import '../blocs/config_bloc.dart';
 import './common/screen.dart';
 
 class HomePage extends Screen {
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseDatabase _db = FirebaseDatabase.instance;
-
   @override
   bool matchRoute(String route) => route == '/';
 
@@ -21,21 +17,21 @@ class HomePage extends Screen {
       ),
       body: Center(
         child: StreamBuilder(
-          stream: _auth.onAuthStateChanged,
+          stream: AuthBloc.of(context).loginState,
           builder: (_, AsyncSnapshot<FirebaseUser> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+            if (snapshot.connectionState != ConnectionState.done) {
               return Center(
                 child: CircularProgressIndicator(),
               );
             }
-            return buildBody(snapshot.data);
+            return buildBody(context, snapshot.data);
           },
         ),
       ),
     );
   }
 
-  Widget buildBody(FirebaseUser user) {
+  Widget buildBody(BuildContext context, FirebaseUser user) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -43,7 +39,7 @@ class HomePage extends Screen {
         Text("Welcome!"),
         user == null ? SizedBox(height: 20.0) : buildUserView(user),
         FutureBuilder(
-          future: _accessDatabase(user),
+          future: _accessDatabase(context, user),
           builder: (_, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return Center(child: CircularProgressIndicator());
@@ -54,11 +50,11 @@ class HomePage extends Screen {
         SizedBox(height: 20.0),
         user == null
             ? RaisedButton(
-                onPressed: () => _handleSignIn(),
+                onPressed: () => AuthBloc.of(context).loginGoogle(),
                 child: Text('Sign In'),
               )
             : RaisedButton(
-                onPressed: () => _auth.signOut(),
+                onPressed: () => AuthBloc.of(context).logout(),
                 child: Text('Sign Out'),
               ),
       ],
@@ -76,10 +72,7 @@ class HomePage extends Screen {
         'isAnonymous = ${user.isAnonymous}\n'
         'isEmailVerified = ${user.isEmailVerified}\n'
         'provider = ${user.providerId}\n'
-        '\n${"-" * 35}\n\n'
-        'db app name = ${_db.app?.name}\n'
-        'database url = ${_db.databaseURL}\n'
-        '\n${"-" * 35}',
+        '\n${"-" * 35}\n',
         style: TextStyle(
           fontFamily: 'monospace',
         ),
@@ -89,32 +82,15 @@ class HomePage extends Screen {
 
   Widget buildDataDisplay(Map data) {
     return Text(
-      (data?.entries ?? [])
-          .map((entry) => '${entry.key} = ${entry.value}')
-          .join('\n'),
+      (data?.entries ?? []).map((entry) => '${entry.key} = ${entry.value}').join('\n'),
       style: TextStyle(
         fontFamily: 'monospace',
       ),
     );
   }
 
-  Future<FirebaseUser> _handleSignIn() async {
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    final FirebaseUser user = await _auth.signInWithCredential(credential);
-    print("signed in " + user.displayName);
-    return user;
-  }
-
-  Future<Map> _accessDatabase(FirebaseUser user) async {
-    final db = _db.reference().child('users').child(user.uid).child('configs');
+  Future<Map> _accessDatabase(BuildContext context, FirebaseUser user) async {
+    final db = ConfigBloc.of(context).userConfig(user.uid);
     // write values to database
     await db.update(
       Map.fromEntries([
