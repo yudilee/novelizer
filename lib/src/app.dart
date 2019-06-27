@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './blocs/bloc_provider.dart';
 import './blocs/auth_bloc.dart';
+import './blocs/config_bloc.dart';
 import './blocs/downloader_bloc.dart';
 import './views/common/error_widget.dart';
 import './views/homepage.dart';
@@ -12,8 +13,11 @@ class App extends StatelessWidget {
     return BlocProvider(
       bloc: AuthBloc(),
       child: BlocProvider(
-        bloc: DownloaderBloc(),
-        child: app(),
+        bloc: ConfigBloc(),
+        child: BlocProvider(
+          bloc: DownloaderBloc(),
+          child: app(),
+        ),
       ),
     );
   }

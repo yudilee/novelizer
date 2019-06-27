@@ -90,7 +90,7 @@ class HomePage extends Screen {
   }
 
   Future<Map> _accessDatabase(BuildContext context, FirebaseUser user) async {
-    final db = ConfigBloc.of(context).userConfig(user.uid);
+    final db = ConfigBloc.of(context).userDB(user.uid);
     // write values to database
     await db.update(
       Map.fromEntries([
